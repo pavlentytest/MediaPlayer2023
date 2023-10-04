@@ -9,15 +9,30 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    MediaPlayer player; // null => NullPointerException
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    public void doPlay(View v) {
-        MediaPlayer player = MediaPlayer.create(this,R.raw.vivaldi);
-        player.start();
+    public void doAction(View v) {
+        if(v.getId() == R.id.start){
+            if(player == null) {
+                player  = MediaPlayer.create(this,R.raw.vivaldi);
+                player.start(); // с 1го раза стартуем
+            } else {
+                if(player.isPlaying()) {
+                    player.pause();
+                } else {
+                    player.start(); // если уже на паузе - то продолжаем
+                }
+            }
+        } else {
+            player.stop();
+            player = null;
+        }
     }
 
 }
